@@ -35,8 +35,6 @@ const filtersToShow = [
 const Email = (props) => {
   const { emailFilters, selectedEmail, updateEmailFilters } = props;
 
-  return <div className={"emailPageContainer"}></div>;
-
   return (
     <div className={"emailPageContainer"}>
       <FilterHeader
@@ -45,7 +43,7 @@ const Email = (props) => {
         selectedFilters={emailFilters}
       />
       <div className={"listAndBodyContainer"}>
-        <EmailList handleEmailListScroll={handleEmailListScroll} />
+        <EmailList />
         {selectedEmail && <EmailBody selectedEmail={selectedEmail} />}
       </div>
     </div>

@@ -26,7 +26,7 @@ const getFilterOptions = ({
   });
 };
 
-const Filters = (props) => {
+const Filters = React.memo((props) => {
   const { filtersToShow, selectedFilters, handleChange } = props;
   return filtersToShow.map(({ id: filterId, label, type, options }) => {
     const filterOptions = getFilterOptions({
@@ -44,11 +44,11 @@ const Filters = (props) => {
       </div>
     );
   });
-};
+});
 
 //This is a generic FilterHeader Component
 //even more filters can be added in future just by passing filtersToShow
-const FilterHeader = (props) => {
+const FilterHeader = React.memo((props) => {
   const { filtersToShow, selectedFilters, onchange } = props;
 
   const handleChange = ({ filterId, value }) => {
@@ -71,6 +71,6 @@ const FilterHeader = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default FilterHeader;

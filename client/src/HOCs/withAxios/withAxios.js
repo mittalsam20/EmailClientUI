@@ -29,7 +29,6 @@ const withAxios =
         setAxiosState((prevState) => ({ ...prevState, ...updatedState }));
       };
 
-      console.log(url, isLoading);
       useEffect(() => {
         fetchData({ url, header, updateState });
       }, [url]);

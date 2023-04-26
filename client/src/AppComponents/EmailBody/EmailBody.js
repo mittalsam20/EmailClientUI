@@ -12,7 +12,7 @@ import withLoader from "HOCs/withLoader/withLoader";
 import { FETCH_EMAIL_BASE_URL } from "Constants/Constants";
 import { getFormattedDateFromTimestamp } from "Utils/helperFunctions";
 
-const EmailBody = (props) => {
+const EmailBody = React.memo((props) => {
   const { data, selectedEmail, favoriteEmailIds, updateFavoriteEmailIds } =
     props;
   const { body } = data;
@@ -52,10 +52,9 @@ const EmailBody = (props) => {
       </div>
     </div>
   );
-};
+});
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state);
   const { selectedEmail, emailFilters, favoriteEmailIds } = state.email;
   return {
     emailFilters,

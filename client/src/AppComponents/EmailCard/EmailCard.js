@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import "./EmailCard.css";
 import Avatar from "UIComponents/Avatar";
@@ -54,6 +54,7 @@ const getFormattedEmail = ({
   subject,
   email,
   date,
+  selectedEmail,
   short_description,
 }) => {
   const capitalizedName = capitalizeFirstLetter({ string: name });
@@ -70,12 +71,19 @@ const getFormattedEmail = ({
       customStyle: { fontWeight: 700 },
       showEntityName: true,
     },
-    description: { value: short_description, customStyle: { margin: "8px 0" } },
+    description: {
+      value: short_description,
+      customStyle: {
+        margin: "8px 0",
+        overflow: selectedEmail ? "hidden" : "visible", //not the best way to do it, I know
+        textOverflow: selectedEmail ? "ellipsis" : "initial",
+      },
+    },
     date: { value: formattedDate, showFavorite: true },
   };
 };
 
-const EmailCard = (props) => {
+const EmailCard = React.memo((props) => {
   const {
     id,
     date,
@@ -88,18 +96,26 @@ const EmailCard = (props) => {
     onClickEmailCard,
   } = props;
 
-  const cardContainerStyle = getCardContainerStyle({
-    id,
-    isEmailRead,
-    selectedEmail,
-  });
-  const formattedEmail = getFormattedEmail({
-    name,
-    subject,
-    email,
-    date,
-    short_description,
-  });
+  const cardContainerStyle = useMemo(() => {
+    return getCardContainerStyle({
+      id,
+      isEmailRead,
+      selectedEmail,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedEmail]);
+
+  const formattedEmail = useMemo(() => {
+    return getFormattedEmail({
+      name,
+      subject,
+      email,
+      date,
+      selectedEmail,
+      short_description,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedEmail]);
 
   return (
     <div
@@ -120,6 +136,6 @@ const EmailCard = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default EmailCard;
