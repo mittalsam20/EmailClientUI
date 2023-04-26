@@ -1,0 +1,40 @@
+.parentContainer {
+  display: flex;
+  padding: 28px 48px 24px 28px;
+  background-color: var(--white);
+  max-width: 56%;
+  max-height: 80vh;
+  gap: 20px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+}
+
+.rightContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.emailBodyHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subject {
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.emailBodyContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.emailBodyContainer::-webkit-scrollbar {
+  display: none;
+}

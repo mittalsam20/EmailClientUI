@@ -4,6 +4,7 @@ import { updateEmailFilters } from "Store";
 
 import "./Email.css";
 import EmailList from "Pages/EmailList";
+import EmailBody from "AppComponents/EmailBody";
 import FilterHeader from "AppComponents/FilterHeader";
 
 const filtersToShow = [
@@ -45,6 +46,7 @@ const Email = (props) => {
       />
       <div className={"listAndBodyContainer"}>
         <EmailList handleEmailListScroll={handleEmailListScroll} />
+        {selectedEmail && <EmailBody selectedEmail={selectedEmail} />}
       </div>
     </div>
   );
