@@ -58,7 +58,7 @@ const EmailList = (props) => {
     updateSelectedEmail,
     handleEmailListScroll,
   } = props;
-  const { page: currentPage } = emailFilters;
+  const { status, page: currentPage } = emailFilters;
   const filteredEmails = useMemo(() => {
     return getFilteredEmails({
       emails,
@@ -66,12 +66,14 @@ const EmailList = (props) => {
       readEmailIds,
       favoriteEmailIds,
     });
-  }, [emails, emailFilters, readEmailIds, favoriteEmailIds]);
+  }, [emails, emailFilters, favoriteEmailIds]);
 
   //To handle two empty States
   //1 if no emails are there in DB  2 if no filteredEmails are there
   const numberOfResultsPerPage = 10;
   const numberOfPages = Math.ceil(totalEmails / numberOfResultsPerPage);
+  const showPaginationSection = numberOfPages > 1 && !status; // pagination will only show when status filter is clear and #of pages>1
+  // I am doing this because I cannot determine the behavior of filters with the API provided, will discuss this
   const noResultsText = emails.length
     ? "No Emails found for the selected filters"
     : null;
@@ -119,7 +121,7 @@ const EmailList = (props) => {
               />
             );
           })}
-          {numberOfPages > 1 && (
+          {showPaginationSection && (
             <Pagination
               numberOfPages={numberOfPages}
               onClickPage={onClickPageNumber}
