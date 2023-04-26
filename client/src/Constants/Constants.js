@@ -9,3 +9,7 @@ export const colors = {
   readBackground: "#f2f2f2",
   white: "#ffffff",
 };
+
+export const READ_EMAILS_LOCAL_STORAGE_KEY = "READ_EMAILS_LOCAL_STORAGE_KEY";
+export const FAVORITE_EMAILS_LOCAL_STORAGE_KEY =
+  "FAVORITE_EMAILS_LOCAL_STORAGE_KEY";
