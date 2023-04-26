@@ -1,0 +1,23 @@
+:root {
+  --accent: #e54065;
+  --background: #f4f5f9;
+  --border: #cfd2dc;
+  --text: #636363;
+  --filter-button: #e1e4ea;
+  --read-background: #f2f2f2;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+}

@@ -1,0 +1,12 @@
+.emailPageContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 36px 44px 0 44px;
+}
+
+.listAndBodyContainer {
+  display: flex;
+  gap: 20px;
+}
