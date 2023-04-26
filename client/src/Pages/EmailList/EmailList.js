@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { updateSelectedEmail } from "Store";
+import { addEmailToRead, resetSelectedEmail, updateSelectedEmail } from "Store";
 
 import "./EmailList.css";
 import withAxios from "HOCs/withAxios";
@@ -27,13 +27,32 @@ const getFilteredEmails = ({
   return emails;
 };
 
+const updateSelectedEmailOnFilterChange = ({
+  filteredEmails,
+  selectedEmail,
+  updateSelectedEmail,
+}) => {
+  if (selectedEmail) {
+    const doesFilteredEmailsHaveSelectedEmail = filteredEmails.some(
+      ({ id }) => id === selectedEmail.id
+    );
+    if (!doesFilteredEmailsHaveSelectedEmail) {
+      updateSelectedEmail({ email: filteredEmails[0] });
+    }
+  }
+};
+
 //Didn't made this component dumb as this can be reused when scaling app.
 const EmailList = (props) => {
   const {
     data: { list: emails = [] }, // received from withAxios
     emailFilters,
+    selectedEmail,
     readEmailIds,
+    addEmailToRead,
     favoriteEmailIds,
+    resetSelectedEmail,
+    updateSelectedEmail,
   } = props;
 
   const filteredEmails = getFilteredEmails({
@@ -49,13 +68,43 @@ const EmailList = (props) => {
     ? "No Emails found for the selected filters"
     : null;
 
-  const onClickEmailCard = ({}) => {};
+  useEffect(() => {
+    updateSelectedEmailOnFilterChange({
+      selectedEmail,
+      filteredEmails,
+      updateSelectedEmail,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredEmails]);
+
+  const onClickEmailCard = ({ email }) => {
+    addEmailToRead({ emailId: email.id });
+    if (selectedEmail && email.id === selectedEmail.id) {
+      resetSelectedEmail();
+      return;
+    }
+    updateSelectedEmail({ email });
+  };
 
   return (
     <div className="emailListContainer">
       {filteredEmails.length ? (
         filteredEmails.map(({ id, ...restProps }) => {
-          return <EmailCard />;
+          const isEmailRead = readEmailIds.includes(id);
+          const isEmailFavorite = favoriteEmailIds.includes(id);
+          return (
+            <EmailCard
+              key={id}
+              id={id}
+              {...restProps}
+              isEmailRead={isEmailRead}
+              selectedEmail={selectedEmail}
+              isEmailFavorite={isEmailFavorite}
+              onClickEmailCard={() =>
+                onClickEmailCard({ email: { id, ...restProps } })
+              }
+            />
+          );
         })
       ) : (
         <NoResults text={noResultsText} />
@@ -65,15 +114,20 @@ const EmailList = (props) => {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const { selectedEmail, emailFilters } = state.email;
+  const { selectedEmail, emailFilters, readEmailIds, favoriteEmailIds } =
+    state.email;
   return {
+    readEmailIds,
     emailFilters,
     selectedEmail,
+    favoriteEmailIds,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    resetSelectedEmail: () => dispatch(resetSelectedEmail()),
+    addEmailToRead: (params) => dispatch(addEmailToRead(params)),
     updateSelectedEmail: (params) => dispatch(updateSelectedEmail(params)),
   };
 };

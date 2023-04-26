@@ -1,0 +1,41 @@
+.emailCardContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+.emailDetailContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail {
+  display: flex;
+  gap: 4px;
+}
+
+.entityName {
+  display: flex;
+  text-transform: capitalize;
+}
+
+.value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40ch;
+}
+
+.favoriteText {
+  display: flex;
+  font-weight: 700;
+  margin-left: 32px;
+  color: var(--accent);
+}
