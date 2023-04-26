@@ -1,4 +1,8 @@
 import { UPDATE_EMAIL_FILTERS } from "./EmailTypes.js";
+  RESET_EMAIL_FILTERS,
+  UPDATE_EMAIL_FILTERS,
+  RESET_SELECTED_EMAIL,
+  UPDATE_SELECTED_EMAIL,
 
 const initialEmailFilters = {
   page: 1,
@@ -22,6 +26,27 @@ const reducer = (state = initialState, action) => {
         state,
         entityName: "emailFilters",
         value: { ...state.emailFilters, ...payload },
+      });
+    }
+    case RESET_EMAIL_FILTERS: {
+      return updateState({
+        state,
+        entityName: "emailFilters",
+        value: initialEmailFilters,
+      });
+    }
+    case UPDATE_SELECTED_EMAIL: {
+      return updateState({
+        state,
+        entityName: "selectedEmail",
+        value: payload,
+      });
+    }
+    case RESET_SELECTED_EMAIL: {
+      return updateState({
+        state,
+        entityName: "selectedEmail",
+        value: null,
       });
     }
     default:
