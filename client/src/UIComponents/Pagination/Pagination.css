@@ -2,7 +2,7 @@
   display: flex;
   gap: 8px;
   justify-content: center;
-  margin-bottom: 120px;
+  margin-bottom: 108px;
 }
 
 .pageNumberBox {
@@ -10,6 +10,7 @@
   justify-content: center;
   align-items: center;
   padding: 8px;
+  border: 1px solid var(--border);
   border-radius: 4px;
   cursor: pointer;
 }

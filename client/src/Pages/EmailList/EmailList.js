@@ -77,7 +77,7 @@ const EmailList = (props) => {
     : null;
 
   const onClickEmailCard = ({ email }) => {
-    addEmailToRead({ emailId: email.id });
+    if (!readEmailIds.includes(email.id)) addEmailToRead({ emailId: email.id });
     if (selectedEmail && email.id === selectedEmail.id) {
       resetSelectedEmail();
       return;

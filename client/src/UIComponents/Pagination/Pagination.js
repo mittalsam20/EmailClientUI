@@ -6,7 +6,7 @@ import { colors } from "Constants/Constants";
 const getPageNumberBoxStyles = ({ isCurrentPage }) => {
   return isCurrentPage
     ? {
-        border: `1px solid ${colors.border}`,
+        border: `1px solid ${colors.accent}`,
         backgroundColor: colors.background,
       }
     : {};
