@@ -1,3 +1,27 @@
+const formattedDateOptions = {
+  month: "2-digit",
+  day: "2-digit",
+  year: "numeric",
+};
+
+const formattedTimeOptions = {
+  hour: "numeric",
+  minute: "numeric",
+  hour12: true,
+};
+
+export const getFormattedDateFromTimestamp = ({ timestamp }) => {
+  const dateObject = new Date(timestamp);
+  const formattedDate = dateObject.toLocaleDateString([], formattedDateOptions);
+  const formattedTime = dateObject
+    .toLocaleTimeString([], formattedTimeOptions)
+    .split(" ")
+    .join("")
+    .toLowerCase();
+
+  return `${formattedDate} ${formattedTime}`;
+};
+
 export const getInitialsFromFirstName = ({ name = "" }) => {
   return name[0];
 };
