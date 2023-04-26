@@ -1,0 +1,18 @@
+.filterHeaderContainer {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.filtersContainer {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.optionsContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}

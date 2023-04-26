@@ -4,6 +4,32 @@ import { updateEmailFilters } from "Store";
 
 import "./Email.css";
 import EmailList from "Pages/EmailList";
+import FilterHeader from "AppComponents/FilterHeader";
+
+const filtersToShow = [
+  {
+    id: "status",
+    label: "Status",
+    type: "chip",
+    options: [
+      {
+        id: "UNREAD",
+        value: "UNREAD",
+        optionLabel: "Unread",
+      },
+      {
+        id: "READ",
+        value: "READ",
+        optionLabel: "Read",
+      },
+      {
+        id: "FAVORITES",
+        value: "FAVORITES",
+        optionLabel: "Favorites",
+      },
+    ],
+  },
+];
 
 const Email = (props) => {
   const { emailFilters, selectedEmail, updateEmailFilters } = props;
@@ -17,6 +43,9 @@ const Email = (props) => {
         filtersToShow={filtersToShow}
         selectedFilters={emailFilters}
       />
+      <div className={"listAndBodyContainer"}>
+        <EmailList handleEmailListScroll={handleEmailListScroll} />
+      </div>
     </div>
   );
 };
