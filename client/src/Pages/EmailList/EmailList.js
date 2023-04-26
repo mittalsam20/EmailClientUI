@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { addEmailToRead, resetSelectedEmail, updateSelectedEmail } from "Store";
@@ -8,8 +8,10 @@ import withAxios from "HOCs/withAxios";
 import withLoader from "HOCs/withLoader";
 import NoResults from "UIComponents/NoResults";
 import EmailCard from "AppComponents/EmailCard";
+import Pagination from "UIComponents/Pagination";
 
 import { FETCH_EMAIL_BASE_URL } from "Constants/Constants";
+import { updateEmailFilters } from "Store";
 
 const getFilteredEmails = ({
   emails,
@@ -45,37 +47,34 @@ const updateSelectedEmailOnFilterChange = ({
 //Didn't made this component dumb as this can be reused when scaling app.
 const EmailList = (props) => {
   const {
-    data: { list: emails = [] }, // received from withAxios
+    data: { list: emails = [], total: totalEmails }, // received from withAxios
     emailFilters,
     selectedEmail,
     readEmailIds,
     addEmailToRead,
     favoriteEmailIds,
     resetSelectedEmail,
+    updateEmailFilters,
     updateSelectedEmail,
+    handleEmailListScroll,
   } = props;
-
-  const filteredEmails = getFilteredEmails({
-    emails,
-    emailFilters,
-    readEmailIds,
-    favoriteEmailIds,
-  });
+  const { page: currentPage } = emailFilters;
+  const filteredEmails = useMemo(() => {
+    return getFilteredEmails({
+      emails,
+      emailFilters,
+      readEmailIds,
+      favoriteEmailIds,
+    });
+  }, [emails, emailFilters, readEmailIds, favoriteEmailIds]);
 
   //To handle two empty States
   //1 if no emails are there in DB  2 if no filteredEmails are there
+  const numberOfResultsPerPage = 10;
+  const numberOfPages = Math.ceil(totalEmails / numberOfResultsPerPage);
   const noResultsText = emails.length
     ? "No Emails found for the selected filters"
     : null;
-
-  useEffect(() => {
-    updateSelectedEmailOnFilterChange({
-      selectedEmail,
-      filteredEmails,
-      updateSelectedEmail,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredEmails]);
 
   const onClickEmailCard = ({ email }) => {
     addEmailToRead({ emailId: email.id });
@@ -86,26 +85,48 @@ const EmailList = (props) => {
     updateSelectedEmail({ email });
   };
 
+  const onClickPageNumber = ({ pageNumber }) => {
+    updateEmailFilters({ name: "page", value: pageNumber });
+  };
+
+  useEffect(() => {
+    updateSelectedEmailOnFilterChange({
+      selectedEmail,
+      filteredEmails,
+      updateSelectedEmail,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredEmails]);
+
   return (
-    <div className="emailListContainer">
+    <div className="emailListContainer" onScroll={handleEmailListScroll}>
       {filteredEmails.length ? (
-        filteredEmails.map(({ id, ...restProps }) => {
-          const isEmailRead = readEmailIds.includes(id);
-          const isEmailFavorite = favoriteEmailIds.includes(id);
-          return (
-            <EmailCard
-              key={id}
-              id={id}
-              {...restProps}
-              isEmailRead={isEmailRead}
-              selectedEmail={selectedEmail}
-              isEmailFavorite={isEmailFavorite}
-              onClickEmailCard={() =>
-                onClickEmailCard({ email: { id, ...restProps } })
-              }
+        <>
+          {filteredEmails.map(({ id, ...restProps }) => {
+            const isEmailRead = readEmailIds.includes(id);
+            const isEmailFavorite = favoriteEmailIds.includes(id);
+            return (
+              <EmailCard
+                key={id}
+                id={id}
+                {...restProps}
+                isEmailRead={isEmailRead}
+                selectedEmail={selectedEmail}
+                isEmailFavorite={isEmailFavorite}
+                onClickEmailCard={() =>
+                  onClickEmailCard({ email: { id, ...restProps } })
+                }
+              />
+            );
+          })}
+          {numberOfPages > 1 && (
+            <Pagination
+              numberOfPages={numberOfPages}
+              onClickPage={onClickPageNumber}
+              currentPageNumber={currentPage}
             />
-          );
-        })
+          )}
+        </>
       ) : (
         <NoResults text={noResultsText} />
       )}
@@ -128,6 +149,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     resetSelectedEmail: () => dispatch(resetSelectedEmail()),
     addEmailToRead: (params) => dispatch(addEmailToRead(params)),
+    updateEmailFilters: (params) => dispatch(updateEmailFilters(params)),
     updateSelectedEmail: (params) => dispatch(updateSelectedEmail(params)),
   };
 };

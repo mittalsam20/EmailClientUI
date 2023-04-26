@@ -9,10 +9,6 @@
   overflow-x: hidden;
 }
 
-.emailListContainer .emailCardContainer:last-of-type {
-  margin-bottom: 120px;
-}
-
 .emailListContainer::-webkit-scrollbar {
   display: none;
 }
