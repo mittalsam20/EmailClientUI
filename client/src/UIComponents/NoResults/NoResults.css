@@ -1,0 +1,9 @@
+.noResultsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: var(--text);
+  font-weight: 400;
+  font-size: 2rem;
+}
