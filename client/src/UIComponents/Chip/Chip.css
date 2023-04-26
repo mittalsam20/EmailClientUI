@@ -1,0 +1,11 @@
+.chipContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: var(--read-background);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+}
